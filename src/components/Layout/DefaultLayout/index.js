@@ -3,15 +3,31 @@ import Header from "../components/Header";
 
 import SideBar from "./SideBar";
 
+import styled from "styled-components";
+
+const DefaultLayoutStyles = styled.div`
+  display: flex;
+  justify-content: center;
+  .container {
+    width: 1150px;
+    display: flex;
+  }
+  .content {
+    flex: 1;
+  }
+`;
+
 const DefaultLayout = ({ children }) => {
   return (
-    <div>
+    <>
       <Header></Header>
-      <div className="container">
-        <SideBar></SideBar>
-        <div className="content">{children}</div>
-      </div>
-    </div>
+      <DefaultLayoutStyles>
+        <div className="container">
+          <SideBar></SideBar>
+          <div className="content">{children}</div>
+        </div>
+      </DefaultLayoutStyles>
+    </>
   );
 };
 
