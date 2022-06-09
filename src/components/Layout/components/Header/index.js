@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+import Tippy from "@tippyjs/react/headless";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleXmark,
   faSpinner,
   faMagnifyingGlass,
+  faEllipsisVertical,
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+
 import Button from "~/components/Button";
+import { Wrapper as PopperWrapper } from "~/components/Popper";
+import AccountItem from "~/components/AccountItem";
 
 const HeaderStyles = styled.header`
   --search-border-radius: 92px;
@@ -24,6 +29,7 @@ const HeaderStyles = styled.header`
     width: 100%;
     max-width: 1150px;
   }
+
   .search {
     width: 361px;
     height: var(--search-height);
@@ -83,11 +89,31 @@ const HeaderStyles = styled.header`
       color: rgba(22, 24, 35, 0.34);
     }
   }
+  .search-results {
+    width: 361px;
+    .search-title {
+      font-size: 1.4rem;
+      margin: 0 16px;
+      font-weight: 600;
+      color: rgba(22, 24, 35, 0.5);
+    }
+  }
   .action {
+    display: flex;
+    align-items: center;
+  }
+  .text-gray {
+    color: rgba(22, 24, 35, 0.75);
+  }
+  .more-button {
+    font-size: 2rem;
+    margin-left: 28px;
+    background-color: transparent;
   }
 `;
 
 const Header = () => {
+  const [searchResult, setSearchResult] = useState([]);
   return (
     <HeaderStyles>
       <div className="content">
@@ -166,26 +192,43 @@ const Header = () => {
             </defs>
           </svg>
         </div>
-        <div className="search">
-          <input
-            type="text"
-            className="input"
-            placeholder="Search accounts and videos"
-            spellCheck={false}
-          />
-          <button className="search-clear">
-            <FontAwesomeIcon className="clear" icon={faCircleXmark} />
-            <FontAwesomeIcon className="loading" icon={faSpinner} />
-          </button>
-          <button className="search-btn">
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </button>
-        </div>
+        <Tippy
+          visible={false}
+          interactive
+          render={(attrs) => (
+            <div className="search-results">
+              <PopperWrapper>
+                <h4 className="search-title">Accounts</h4>
+                <AccountItem></AccountItem>
+                <AccountItem></AccountItem>
+                <AccountItem></AccountItem>
+              </PopperWrapper>
+            </div>
+          )}
+        >
+          <div className="search">
+            <input
+              type="text"
+              className="input"
+              placeholder="Search accounts and videos"
+              spellCheck={false}
+            />
+            <button className="search-clear">
+              <FontAwesomeIcon className="clear" icon={faCircleXmark} />
+              <FontAwesomeIcon className="loading" icon={faSpinner} />
+            </button>
+
+            <button className="search-btn">
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </button>
+          </div>
+        </Tippy>
         <div className="action">
           <Button text>Upload</Button>
-          <Button primary disabled>
-            Log in
-          </Button>
+          <Button primary>Log in</Button>
+          <div className="more-button">
+            <FontAwesomeIcon icon={faEllipsisVertical} />
+          </div>
         </div>
       </div>
     </HeaderStyles>

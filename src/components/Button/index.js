@@ -24,13 +24,34 @@ const ButtonStyles = styled.div`
     }
   }
 
+  .title + .icon,
+  .icon + .title {
+    margin-left: 10px;
+  }
+
+  ${(props) =>
+    props.rounded &&
+    css`
+      .wrapper {
+        border-radius: 999px;
+        box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+        border-color: rgba(22, 24, 35, 0.12);
+        :hover {
+          border-color: rgba(22, 24, 35, 0.2);
+          background-color: rgba(22, 24, 35, 0.03);
+        }
+      }
+    `};
+
   ${(props) =>
     props.primary &&
     css`
       .wrapper {
         background-color: ${(props) => props.theme.primary};
+        border-color: ${(props) => props.theme.primary};
         color: var(--white);
         &:hover {
+          border-color: ${(props) => props.theme.primary};
           background: linear-gradient(
               0deg,
               rgba(0, 0, 0, 0.06),
@@ -48,6 +69,7 @@ const ButtonStyles = styled.div`
         color: ${(props) => props.theme.primary};
         border-color: currentColor;
         &:hover {
+          border-color: currentColor;
           cursor: pointer;
           background-color: rgba(254, 44, 85, 0.06);
         }
@@ -89,13 +111,17 @@ function Button({
   text = false,
   small = false,
   large = false,
+  rounded = false,
   disabled = false,
+  className,
+  rightIcon,
+  leftIcon,
   children,
   ...passProps
 }) {
   let Comp = "button";
 
-  console.log(outline);
+  console.log(className);
 
   const props = {
     onClick,
@@ -113,12 +139,18 @@ function Button({
     <ButtonStyles
       primary={primary}
       outline={outline}
-      small={small}
+      sCompmall={small}
       large={large}
       text={text}
+      rounded={rounded}
+      className={className}
+      rightIcon={rightIcon}
+      leftIcon={leftIcon}
     >
-      <Comp className="wrapper" {...props} disabled={disabled}>
-        <span>{children}</span>
+      <Comp className={`wrapper ${className}`} {...props} disabled={disabled}>
+        {leftIcon && <span className="icon">{leftIcon}</span>}
+        <span className="title">{children}</span>
+        {rightIcon && <span className="icon">{rightIcon}</span>}
       </Comp>
     </ButtonStyles>
   );
