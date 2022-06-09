@@ -6,6 +6,7 @@ import {
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+import Button from "~/components/Button";
 
 const HeaderStyles = styled.header`
   --search-border-radius: 92px;
@@ -81,6 +82,8 @@ const HeaderStyles = styled.header`
       transform: translateY(-50%);
       color: rgba(22, 24, 35, 0.34);
     }
+  }
+  .action {
   }
 `;
 
@@ -178,7 +181,12 @@ const Header = () => {
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </button>
         </div>
-        <div className="action"></div>
+        <div className="action">
+          <Button text>Upload</Button>
+          <Button primary disabled>
+            Log in
+          </Button>
+        </div>
       </div>
     </HeaderStyles>
   );
