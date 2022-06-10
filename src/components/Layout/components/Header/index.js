@@ -6,12 +6,16 @@ import {
   faSpinner,
   faMagnifyingGlass,
   faEllipsisVertical,
+  faEarthAsia,
+  faCircleQuestion,
+  faKeyboard,
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
 import Button from "~/components/Button";
 import { Wrapper as PopperWrapper } from "~/components/Popper";
 import AccountItem from "~/components/AccountItem";
+import Menu from "~/components/Popper/Menu";
 
 const HeaderStyles = styled.header`
   --search-border-radius: 92px;
@@ -111,6 +115,22 @@ const HeaderStyles = styled.header`
     background-color: transparent;
   }
 `;
+
+const MENU_ITEMS = [
+  {
+    icon: <FontAwesomeIcon icon={faEarthAsia} />,
+    title: "English",
+  },
+  {
+    icon: <FontAwesomeIcon icon={faCircleQuestion} />,
+    title: "Feedback and help",
+    to: "/feedback",
+  },
+  {
+    icon: <FontAwesomeIcon icon={faKeyboard} />,
+    title: "Keyboard shortcuts",
+  },
+];
 
 const Header = () => {
   const [searchResult, setSearchResult] = useState([]);
@@ -226,9 +246,11 @@ const Header = () => {
         <div className="action">
           <Button text>Upload</Button>
           <Button primary>Log in</Button>
-          <div className="more-button">
-            <FontAwesomeIcon icon={faEllipsisVertical} />
-          </div>
+          <Menu items={MENU_ITEMS}>
+            <button className="more-button">
+              <FontAwesomeIcon icon={faEllipsisVertical} />
+            </button>
+          </Menu>
         </div>
       </div>
     </HeaderStyles>

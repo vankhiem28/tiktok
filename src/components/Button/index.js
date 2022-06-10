@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 const ButtonStyles = styled.div`
-  display: inline;
+  display: flex;
   + div {
     margin-left: 10px;
   }
@@ -27,6 +27,12 @@ const ButtonStyles = styled.div`
   .title + .icon,
   .icon + .title {
     margin-left: 10px;
+  }
+
+  .icon {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
   }
 
   ${(props) =>

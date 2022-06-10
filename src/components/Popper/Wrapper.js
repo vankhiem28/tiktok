@@ -11,8 +11,8 @@ const WrapperStyles = styled.div`
   overflow: hidden auto;
 `;
 
-function Wrapper({ children }) {
-  return <WrapperStyles>{children}</WrapperStyles>;
+function Wrapper({ children, className }) {
+  return <WrapperStyles className={className}>{children}</WrapperStyles>;
 }
 
 export default Wrapper;

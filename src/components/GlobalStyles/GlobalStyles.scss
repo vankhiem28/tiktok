@@ -4,6 +4,7 @@
 :root {
   --white: #fff;
   --black: #000;
+  --text-color: #161823;
 }
 
 * {
@@ -32,4 +33,5 @@ input,
 
 a[href] {
   text-decoration: none;
+  color: var(--text-color);
 }
