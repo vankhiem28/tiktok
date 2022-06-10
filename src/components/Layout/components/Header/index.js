@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import Tippy from "@tippyjs/react/headless";
+import HeadLessTippy from "@tippyjs/react/headless";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleXmark,
@@ -9,6 +11,8 @@ import {
   faEarthAsia,
   faCircleQuestion,
   faKeyboard,
+  faCloudUpload,
+  faMessage,
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
@@ -32,6 +36,7 @@ const HeaderStyles = styled.header`
     height: 100%;
     width: 100%;
     max-width: 1150px;
+    padding: 0 24px;
   }
 
   .search {
@@ -113,6 +118,21 @@ const HeaderStyles = styled.header`
     font-size: 2rem;
     margin-left: 28px;
     background-color: transparent;
+    cursor: pointer;
+  }
+  .action-btn {
+    font-size: 2.2rem;
+    background-color: transparent;
+    color: rgb(22, 24, 35);
+    padding: 4px 12px;
+  }
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-left: 12px;
+    cursor: pointer;
   }
 `;
 
@@ -120,6 +140,19 @@ const MENU_ITEMS = [
   {
     icon: <FontAwesomeIcon icon={faEarthAsia} />,
     title: "English",
+    children: {
+      title: "Language",
+      data: [
+        {
+          code: "en",
+          title: "English",
+        },
+        {
+          code: "vi",
+          title: "Tieng Viet",
+        },
+      ],
+    },
   },
   {
     icon: <FontAwesomeIcon icon={faCircleQuestion} />,
@@ -133,7 +166,13 @@ const MENU_ITEMS = [
 ];
 
 const Header = () => {
+  const currentUser = true;
   const [searchResult, setSearchResult] = useState([]);
+
+  const handleOnChange = (menuItem) => {
+    console.log(menuItem);
+  };
+
   return (
     <HeaderStyles>
       <div className="content">
@@ -212,7 +251,7 @@ const Header = () => {
             </defs>
           </svg>
         </div>
-        <Tippy
+        <HeadLessTippy
           visible={false}
           interactive
           render={(attrs) => (
@@ -242,14 +281,35 @@ const Header = () => {
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </button>
           </div>
-        </Tippy>
+        </HeadLessTippy>
+
         <div className="action">
-          <Button text>Upload</Button>
-          <Button primary>Log in</Button>
-          <Menu items={MENU_ITEMS}>
-            <button className="more-button">
-              <FontAwesomeIcon icon={faEllipsisVertical} />
-            </button>
+          {currentUser ? (
+            <>
+              <Tippy delay={200} content="Upload video" placement="bottom">
+                <button className="action-btn">
+                  <FontAwesomeIcon icon={faCloudUpload} />
+                </button>
+              </Tippy>
+            </>
+          ) : (
+            <>
+              <Button text>Upload</Button>
+              <Button primary>Log in</Button>
+            </>
+          )}
+          <Menu items={MENU_ITEMS} onChange={handleOnChange}>
+            {currentUser ? (
+              <img
+                src="https://static.fullstack.edu.vn/static/media/f8-icon.7ad2b161d5e80c87e516.png"
+                alt=""
+                className="user-avatar"
+              />
+            ) : (
+              <button className="more-button">
+                <FontAwesomeIcon icon={faEllipsisVertical} />
+              </button>
+            )}
           </Menu>
         </div>
       </div>

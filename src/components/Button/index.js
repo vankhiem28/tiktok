@@ -127,7 +127,7 @@ function Button({
 }) {
   let Comp = "button";
 
-  console.log(className);
+  // console.log(className);
 
   const props = {
     onClick,
@@ -149,7 +149,6 @@ function Button({
       large={large}
       text={text}
       rounded={rounded}
-      className={className}
       rightIcon={rightIcon}
       leftIcon={leftIcon}
     >

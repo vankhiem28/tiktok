@@ -11,6 +11,7 @@ const DefaultLayoutStyles = styled.div`
   .container {
     width: 1150px;
     display: flex;
+    padding: 0 24px;
   }
   .content {
     flex: 1;
