@@ -1,7 +1,9 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
 import styled from "styled-components";
+import Image from "../Image";
 
 const AccountItemStyles = styled.div`
   display: flex;
@@ -9,6 +11,9 @@ const AccountItemStyles = styled.div`
   padding: 9px 16px;
   &:hover {
     background-color: rgb(22, 24, 35, 0.03);
+  }
+  .link {
+    display: flex;
   }
   .avatar {
     width: 40px;
@@ -22,7 +27,6 @@ const AccountItemStyles = styled.div`
   }
   .name {
     font-size: 1.6rem;
-    font-weight: 600;
   }
   .icon {
     font-size: 1.4rem;
@@ -35,21 +39,22 @@ const AccountItemStyles = styled.div`
   }
 `;
 
-function AccountItem() {
+function AccountItem({ data }) {
+  console.log(data);
   return (
     <AccountItemStyles>
-      <img
-        src="https://static.fullstack.edu.vn/static/media/f8-icon.7ad2b161d5e80c87e516.png"
-        alt=""
-        className="avatar"
-      />
-      <div className="info">
-        <h4 className="name">
-          <span>Nguyen van a</span>
-          <FontAwesomeIcon icon={faCircleCheck} className="icon" />
-        </h4>
-        <span className="username">Nguyen van a</span>
-      </div>
+      <Link to={`/@${data.nickname}`} className="link">
+        <Image src={data.avatar} alt="" className="avatar" />
+        <div className="info">
+          <h4 className="name">
+            <span>{data.full_name}</span>
+            {data.tick && (
+              <FontAwesomeIcon icon={faCircleCheck} className="icon" />
+            )}
+          </h4>
+          <span className="username">{data.nickname}</span>
+        </div>
+      </Link>
     </AccountItemStyles>
   );
 }

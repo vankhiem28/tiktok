@@ -1,25 +1,24 @@
 import React, { useState } from "react";
-import HeadLessTippy from "@tippyjs/react/headless";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCircleXmark,
-  faSpinner,
-  faMagnifyingGlass,
   faEllipsisVertical,
   faEarthAsia,
   faCircleQuestion,
   faKeyboard,
-  faCloudUpload,
-  faMessage,
+  faCoins,
+  faGear,
+  faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
 import Button from "~/components/Button";
-import { Wrapper as PopperWrapper } from "~/components/Popper";
-import AccountItem from "~/components/AccountItem";
 import Menu from "~/components/Popper/Menu";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { InboxIcon, MessageIcon, UploadIcon } from "~/components/Icons";
+import Image from "~/components/Image";
+import Search from "../Search";
 
 const HeaderStyles = styled.header`
   --search-border-radius: 92px;
@@ -39,74 +38,6 @@ const HeaderStyles = styled.header`
     padding: 0 24px;
   }
 
-  .search {
-    width: 361px;
-    height: var(--search-height);
-    padding: 0 0 0 16px;
-    background-color: rgba(22, 24, 35, 0.06);
-    border-radius: var(--search-border-radius);
-    border: 1.5px solid transparent;
-    display: flex;
-    position: relative;
-    input {
-      color: ${(props) => props.theme.black};
-      font-size: 1.6rem;
-      border: none;
-      background-color: transparent;
-      outline: none;
-      height: 100%;
-      flex: 1;
-      caret-color: ${(props) => props.theme.primary};
-    }
-    .search-btn {
-      width: 52px;
-      height: 100%;
-      border: none;
-      outline: none;
-      border-top-right-radius: var(--search-border-radius);
-      border-bottom-right-radius: var(--search-border-radius);
-      font-size: 1.8rem;
-      color: rgba(22, 24, 35, 0.34);
-      position: relative;
-      &:hover {
-        background-color: rgba(22, 24, 35, 0.03);
-        cursor: pointer;
-      }
-      &:active {
-        background-color: rgba(22, 24, 35, 0.06);
-      }
-      &::after {
-        content: "";
-        background-color: rgba(22, 24, 35, 0.12);
-        position: absolute;
-        width: 1px;
-        top: var(--search-top-spacer);
-        height: calc(var(--search-height) - var(--search-top-spacer) * 2);
-        right: 52px;
-      }
-    }
-    &:focus-within {
-      border: 1.5px solid rgba(22, 24, 35, 0.2);
-      transition: all 0.2s linear;
-    }
-    .clear,
-    .loading {
-      position: absolute;
-      right: 70px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: rgba(22, 24, 35, 0.34);
-    }
-  }
-  .search-results {
-    width: 361px;
-    .search-title {
-      font-size: 1.4rem;
-      margin: 0 16px;
-      font-weight: 600;
-      color: rgba(22, 24, 35, 0.5);
-    }
-  }
   .action {
     display: flex;
     align-items: center;
@@ -124,7 +55,19 @@ const HeaderStyles = styled.header`
     font-size: 2.2rem;
     background-color: transparent;
     color: rgb(22, 24, 35);
-    padding: 4px 12px;
+    padding: 4px 10px;
+    position: relative;
+    .inbox-notice {
+      font-family: "ProximaNova", sans-serif;
+      position: absolute;
+      top: 0px;
+      right: -1px;
+      background-color: ${(props) => props.theme.primary};
+      color: #fff;
+      font-size: 1.3rem;
+      padding: 3px 6px;
+      border-radius: 999px;
+    }
   }
   .user-avatar {
     width: 32px;
@@ -165,9 +108,33 @@ const MENU_ITEMS = [
   },
 ];
 
+const user_item = [
+  {
+    icon: <FontAwesomeIcon icon={faUser} />,
+    title: "View profile",
+    to: "/profile",
+  },
+  {
+    icon: <FontAwesomeIcon icon={faCoins} />,
+    title: "Get coins",
+    to: "/coins",
+  },
+  {
+    icon: <FontAwesomeIcon icon={faGear} />,
+    title: "Setting",
+    to: "/setting",
+  },
+  ...MENU_ITEMS,
+  {
+    icon: <FontAwesomeIcon icon={faArrowRightFromBracket} />,
+    title: "Log out",
+    to: "/log-out",
+    separator: true,
+  },
+];
+
 const Header = () => {
   const currentUser = true;
-  const [searchResult, setSearchResult] = useState([]);
 
   const handleOnChange = (menuItem) => {
     console.log(menuItem);
@@ -251,44 +218,26 @@ const Header = () => {
             </defs>
           </svg>
         </div>
-        <HeadLessTippy
-          visible={false}
-          interactive
-          render={(attrs) => (
-            <div className="search-results">
-              <PopperWrapper>
-                <h4 className="search-title">Accounts</h4>
-                <AccountItem></AccountItem>
-                <AccountItem></AccountItem>
-                <AccountItem></AccountItem>
-              </PopperWrapper>
-            </div>
-          )}
-        >
-          <div className="search">
-            <input
-              type="text"
-              className="input"
-              placeholder="Search accounts and videos"
-              spellCheck={false}
-            />
-            <button className="search-clear">
-              <FontAwesomeIcon className="clear" icon={faCircleXmark} />
-              <FontAwesomeIcon className="loading" icon={faSpinner} />
-            </button>
 
-            <button className="search-btn">
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </button>
-          </div>
-        </HeadLessTippy>
+        <Search />
 
         <div className="action">
           {currentUser ? (
             <>
               <Tippy delay={200} content="Upload video" placement="bottom">
                 <button className="action-btn">
-                  <FontAwesomeIcon icon={faCloudUpload} />
+                  <UploadIcon />
+                </button>
+              </Tippy>
+              <Tippy delay={200} content="Message" placement="bottom">
+                <button className="action-btn">
+                  <MessageIcon />
+                </button>
+              </Tippy>
+              <Tippy delay={200} content="Inbox" placement="bottom">
+                <button className="action-btn">
+                  <InboxIcon />
+                  <div className="inbox-notice">24</div>
                 </button>
               </Tippy>
             </>
@@ -298,9 +247,12 @@ const Header = () => {
               <Button primary>Log in</Button>
             </>
           )}
-          <Menu items={MENU_ITEMS} onChange={handleOnChange}>
+          <Menu
+            items={currentUser ? user_item : MENU_ITEMS}
+            onChange={handleOnChange}
+          >
             {currentUser ? (
-              <img
+              <Image
                 src="https://static.fullstack.edu.vn/static/media/f8-icon.7ad2b161d5e80c87e516.png"
                 alt=""
                 className="user-avatar"
